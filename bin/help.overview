@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+current_script_path=${BASH_SOURCE[0]}
+plugin_dir=$(dirname "$(dirname "${current_script_path}")")
+
+# shellcheck source=../lib/utils.bash
+source "${plugin_dir}/lib/utils.bash"
+
+cat << EOF
+just is a handy way to save and run project-specific commands.
+
+This readme is also available as a book.
+
+(中文文档在 这里, 快看过来!)
+
+Commands, called recipes, are stored in a file called justfile with syntax inspired by make:
+EOF

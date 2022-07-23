@@ -8,4 +8,8 @@ plugin_dir=$(dirname "$(dirname "${current_script_path}")")
 # shellcheck source=../lib/utils.bash
 source "${plugin_dir}/lib/utils.bash"
 
-install_version "${ASDF_INSTALL_TYPE}" "${ASDF_INSTALL_VERSION}" "${ASDF_INSTALL_PATH}" "${ASDF_DOWNLOAD_PATH}"
+cat << EOF
+asdf plugin repository: https://github.com/olofvndrhr/asdf-just
+tool repository: https://github.com/casey/just
+tool website: https://just.systems/
+EOF
