@@ -6,7 +6,7 @@ GH_REPO="https://github.com/casey/just"
 TOOL_NAME="just"
 TOOL_TEST="just --version"
 
-fail() {
+function fail() {
     echo -e "asdf-${TOOL_NAME}: ${*}"
     exit 1
 }
@@ -18,32 +18,32 @@ if [ -n "${GITHUB_API_TOKEN:-}" ]; then
     curl_opts=("${curl_opts[@]}" -H "Authorization: token ${GITHUB_API_TOKEN}")
 fi
 
-sort_versions() {
+function sort_versions() {
     sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$/.z/; G; s/\n/ /' \
         | LC_ALL=C sort -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n | awk '{print $2}'
 }
 
-list_github_tags() {
-    git ls-remote --tags --refs "$GH_REPO" \
+function list_github_tags() {
+    git ls-remote --tags --refs "{$GH_REPO}" \
         | grep -o 'refs/tags/.*' | cut -d/ -f3- \
         | sed 's/^v//'
 }
 
-list_all_versions() {
+function list_all_versions() {
     # currently all tags are valid releases, so this works
     list_github_tags
 }
 
-get_JUST_PLATFORM() {
-    local JUST_PLATFORM arch
+function get_platform() {
+    local platform arch
 
-    JUST_PLATFORM="$(uname -s)"
+    platform="$(uname -s)"
     arch="$(uname -m)"
 
-    case "${JUST_PLATFORM}" in
-        "Linux") JUST_PLATFORM_dl="unknown-linux-musl" ;;
-        "*BSD") JUST_PLATFORM_dl="unknown-linux-musl" ;;
-        "Darwin") JUST_PLATFORM_dl="apple-darwin" ;;
+    case "${platform}" in
+        "Linux") platform_dl="unknown-linux-musl" ;;
+        "*BSD") platform_dl="unknown-linux-musl" ;;
+        "Darwin") platform_dl="apple-darwin" ;;
     esac
     case "${arch}" in
         "x86_64" | "amd64") arch_dl="x86_64" ;;
@@ -51,38 +51,42 @@ get_JUST_PLATFORM() {
         "arm" | "armv7") arch_dl="armv7" ;;
     esac
 
-    echo "${arch_dl}-${JUST_PLATFORM_dl}"
+    echo "${arch_dl}-${platform_dl}"
 }
 
-download_release() {
-    local version download_path url
+function download_release() {
+    local version download_path url platform release_tar
 
     version="${1:-${ASDF_INSTALL_VERSION}}"
     download_path="${2:-${ASDF_DOWNLOAD_PATH}}"
+    platform="$(get_platform)"
+    release_tar="just-${version}-${platform}.tar.gz"
 
-    url="${GH_REPO}/releases/download/${version}/${JUST_RELEASE_TAR}"
+    url="${GH_REPO}/releases/download/${version}/${release_tar}"
 
     mkdir -p "${download_path}"
 
     echo "* Downloading ${TOOL_NAME} release ${version}..."
-    if ! curl "${curl_opts[@]}" -o "${download_path}/${JUST_RELEASE_TAR}" -C - "${url}"; then
+    if ! curl "${curl_opts[@]}" -o "${download_path}/${release_tar}" -C - "${url}"; then
         fail "Could not download ${url}"
     fi
 }
 
-extract_release() {
-    local version download_path
+function extract_release() {
+    local version download_path platform release_tar
 
     version="${1:-${ASDF_INSTALL_VERSION}}"
     download_path="${2:-${ASDF_DOWNLOAD_PATH}}"
+    platform="$(get_platform)"
+    release_tar="just-${version}-${platform}.tar.gz"
 
-    if ! tar -xzf "${download_path}/${JUST_RELEASE_TAR}" -C "${download_path}" just; then
-        fail "Could not extract ${JUST_RELEASE_TAR}"
+    if ! tar -xzf "${download_path}/${release_tar}" -C "${download_path}" just; then
+        fail "Could not extract ${release_tar}"
     fi
-    rm "${download_path}/${JUST_RELEASE_TAR}"
+    rm "${download_path}/${release_tar}"
 }
 
-install_version() {
+function install_version() {
     local install_type version install_path download_path tool_cmd
 
     install_type="${1:-${ASDF_INSTALL_TYPE}}"
@@ -113,7 +117,3 @@ install_version() {
         fail "An error occurred while installing ${TOOL_NAME} ${version}."
     fi
 }
-
-# get some variables
-JUST_PLATFORM="$(get_JUST_PLATFORM)"
-JUST_RELEASE_TAR="just-${ASDF_INSTALL_VERSION}-${JUST_PLATFORM}.tar.gz"
