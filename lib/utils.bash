@@ -107,7 +107,7 @@ function install_version() {
         if [[ ! -x "${install_path}/${tool_cmd}" ]]; then
             fail "Expected ${install_path}/${tool_cmd} to be executable."
         fi
-        if ! "${tool_cmd}" --version; then
+        if ! "${install_path}/${tool_cmd}" --version; then
             fail "'${tool_cmd} --version' failed."
         fi
 

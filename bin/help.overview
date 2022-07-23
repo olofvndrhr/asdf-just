@@ -15,5 +15,13 @@ This readme is also available as a book.
 
 (中文文档在 这里, 快看过来!)
 
-Commands, called recipes, are stored in a file called justfile with syntax inspired by make:
+Commands, called recipes, are stored in a file called justfile with syntax inspired by make.
+
+You can then run them with just RECIPE:
+
+$ just test-all
+cc *.c -o main
+./test --all
+Yay, all your tests passed!
+
 EOF

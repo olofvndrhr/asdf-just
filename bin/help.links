@@ -9,7 +9,9 @@ plugin_dir=$(dirname "$(dirname "${current_script_path}")")
 source "${plugin_dir}/lib/utils.bash"
 
 cat << EOF
-asdf plugin repository: https://github.com/olofvndrhr/asdf-just
-tool repository: https://github.com/casey/just
-tool website: https://just.systems/
+Links:
+- asdf plugin repository: https://github.com/olofvndrhr/asdf-just
+- tool repository: https://github.com/casey/just
+- tool website: https://just.systems/
+
 EOF
