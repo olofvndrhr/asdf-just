@@ -1,6 +1,0 @@
-
-just-1.2.0-aarch64-unknown-linux-musl.tar.gz
-
-
-
-https://github.com/casey/just/releases/
