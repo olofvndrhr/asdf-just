@@ -66,6 +66,7 @@ function download_release() {
 
     mkdir -p "${download_path}"
 
+    echo "* Platform: ${platform}"
     echo "* Downloading ${TOOL_NAME} release ${version}..."
     if ! curl "${curl_opts[@]}" -o "${download_path}/${release_tar}" -C - "${url}"; then
         fail "Could not download ${url}"
@@ -80,6 +81,7 @@ function extract_release() {
     platform="$(get_platform)"
     release_tar="just-${version}-${platform}.tar.gz"
 
+    echo "* Extracting ${release_tar}..."
     if ! tar -xzf "${download_path}/${release_tar}" -C "${download_path}" just; then
         fail "Could not extract ${release_tar}"
     fi
