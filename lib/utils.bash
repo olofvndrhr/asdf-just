@@ -57,8 +57,8 @@ function get_platform() {
 function download_release() {
     local version download_path url platform release_tar
 
-    version="${1:-${ASDF_INSTALL_VERSION}}"
-    download_path="${2:-${ASDF_DOWNLOAD_PATH}}"
+    version="${1}"
+    download_path="${2}"
     platform="$(get_platform)"
     release_tar="just-${version}-${platform}.tar.gz"
 
@@ -75,8 +75,8 @@ function download_release() {
 function extract_release() {
     local version download_path platform release_tar
 
-    version="${1:-${ASDF_INSTALL_VERSION}}"
-    download_path="${2:-${ASDF_DOWNLOAD_PATH}}"
+    version="${1}"
+    download_path="${2}"
     platform="$(get_platform)"
     release_tar="just-${version}-${platform}.tar.gz"
 
@@ -89,10 +89,10 @@ function extract_release() {
 function install_version() {
     local install_type version install_path download_path tool_cmd
 
-    install_type="${1:-${ASDF_INSTALL_TYPE}}"
-    version="${2:-${ASDF_INSTALL_VERSION}}"
-    install_path="${3:-${ASDF_INSTALL_PATH}}"
-    download_path="${4:-${ASDF_DOWNLOAD_PATH}}"
+    install_type="${1}"
+    version="${2}"
+    install_path="${3%/bin}/bin"
+    download_path="${4}"
 
     if [ "${install_type}" != "version" ]; then
         fail "asdf-${TOOL_NAME} supports release installs only"
