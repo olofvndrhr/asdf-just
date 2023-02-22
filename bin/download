@@ -8,8 +8,12 @@ plugin_dir=$(dirname "$(dirname "${current_script_path}")")
 # shellcheck source=../lib/utils.bash
 source "${plugin_dir}/lib/utils.bash"
 
-# Download tar.gz file to the download directory
+if [[ "${ASDF_INSTALL_TYPE}" != "version" ]]; then
+    fail "asdf-${TOOL_NAME} supports release installs only"
+fi
+
+# download tar.gz file to the download directory
 download_release "${ASDF_INSTALL_VERSION}" "${ASDF_DOWNLOAD_PATH}"
 
-# Extract contents of tar.gz file into the download directory
+# extract contents of tar.gz file into the download directory
 extract_release "${ASDF_INSTALL_VERSION}" "${ASDF_DOWNLOAD_PATH}"

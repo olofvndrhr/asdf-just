@@ -85,25 +85,20 @@ function extract_release() {
     if ! tar -xzf "${download_path}/${release_tar}" -C "${download_path}" just; then
         fail "Could not extract ${release_tar}"
     fi
-    rm "${download_path}/${release_tar}"
+    rm -f "${download_path}/${release_tar}"
 }
 
 function install_version() {
-    local install_type version install_path download_path tool_cmd
+    local version install_path download_path tool_cmd
 
-    install_type="${1}"
-    version="${2}"
-    install_path="${3%/bin}/bin"
-    download_path="${4}"
-
-    if [ "${install_type}" != "version" ]; then
-        fail "asdf-${TOOL_NAME} supports release installs only"
-    fi
+    version="${1}"
+    install_path="${2%/bin}/bin"
+    download_path="${3}"
 
     if ! (
         mkdir -p "${install_path}"
 
-        mv "${download_path}/just" "${install_path}"
+        mv -f "${download_path}/just" "${install_path}"
 
         tool_cmd="$(echo "${TOOL_TEST}" | cut -d' ' -f1)"
         if [[ ! -x "${install_path}/${tool_cmd}" ]]; then

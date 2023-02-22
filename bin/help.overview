@@ -9,6 +9,8 @@ plugin_dir=$(dirname "$(dirname "${current_script_path}")")
 source "${plugin_dir}/lib/utils.bash"
 
 cat << EOF
+> From the github page:
+
 just is a handy way to save and run project-specific commands.
 
 This readme is also available as a book.
