@@ -37,21 +37,32 @@ function list_all_versions() {
 function get_platform() {
     local platform arch
 
-    platform="$(uname -s)"
-    arch="$(uname -m)"
-
-    case "${platform}" in
-        "Linux") platform_dl="unknown-linux-musl" ;;
-        "*BSD") platform_dl="unknown-linux-musl" ;;
-        "Darwin") platform_dl="apple-darwin" ;;
-    esac
-    case "${arch}" in
-        "x86_64" | "amd64") arch_dl="x86_64" ;;
-        "arm64" | "aarch64") arch_dl="aarch64" ;;
-        "arm" | "armv7") arch_dl="armv7" ;;
+    case "$(uname -s)" in
+        "Linux")
+            platform="unknown-linux-musl"
+            ;;
+        "*BSD")
+            platform="unknown-linux-musl"
+            ;;
+        "Darwin")
+            platform="apple-darwin"
+            ;;
     esac
 
-    echo "${arch_dl}-${platform_dl}"
+    case "$(uname -m)" in
+        "x86_64" | "amd64")
+            arch="x86_64"
+            ;;
+        "arm64" | "aarch64")
+            arch="aarch64"
+            ;;
+        "arm" | "armv7")
+            arch="armv7"
+            platform=unknown-linux-musleabihf
+            ;;
+    esac
+
+    echo -n "${arch}-${platform}"
 }
 
 function download_release() {
@@ -60,57 +71,46 @@ function download_release() {
     version="${1}"
     download_path="${2}"
     platform="$(get_platform)"
-    release_tar="just-${version}-${platform}.tar.gz"
+    release_tar="${TOOL_NAME}-${version}-${platform}.tar.gz"
 
     url="${GH_REPO}/releases/download/${version}/${release_tar}"
 
     mkdir -p "${download_path}"
 
     echo "* Platform: ${platform}"
-    echo "* Downloading ${TOOL_NAME} release ${version}..."
+    echo "* Downloading ${TOOL_NAME}, release ${version}..."
     if ! curl "${curl_opts[@]}" -o "${download_path}/${release_tar}" -C - "${url}"; then
         fail "Could not download ${url}"
     fi
-}
-
-function extract_release() {
-    local version download_path platform release_tar
-
-    version="${1}"
-    download_path="${2}"
-    platform="$(get_platform)"
-    release_tar="just-${version}-${platform}.tar.gz"
+    echo "> Download successful"
 
     echo "* Extracting ${release_tar}..."
-    if ! tar -xzf "${download_path}/${release_tar}" -C "${download_path}" just; then
+    if ! tar -xzf "${download_path}/${release_tar}" -C "${download_path}" "${TOOL_NAME}"; then
         fail "Could not extract ${release_tar}"
     fi
     rm -f "${download_path}/${release_tar}"
+    echo "> Extraction successful"
 }
 
 function install_version() {
-    local version install_path download_path tool_cmd
+    local version install_path download_path
 
     version="${1}"
     install_path="${2%/bin}/bin"
     download_path="${3}"
 
-    if ! (
-        mkdir -p "${install_path}"
+    mkdir -p "${install_path}"
 
-        mv -f "${download_path}/just" "${install_path}"
+    mv -f "${download_path}/${TOOL_NAME}" "${install_path}/${TOOL_NAME}"
 
-        tool_cmd="$(echo "${TOOL_TEST}" | cut -d' ' -f1)"
-        if [[ ! -x "${install_path}/${tool_cmd}" ]]; then
-            fail "Expected ${install_path}/${tool_cmd} to be executable."
-        fi
-        if ! "${install_path}/${tool_cmd}" --version; then
-            fail "'${tool_cmd} --version' failed."
-        fi
-
-        echo "${TOOL_NAME} ${version} installation was successful!"
-    ); then
+    if [[ ! -x "${install_path}/${TOOL_NAME}" ]]; then
         rm -rf "${install_path}"
-        fail "An error occurred while installing ${TOOL_NAME} ${version}."
+        fail "Expected ${install_path}/${TOOL_NAME} to be executable"
     fi
+    if ! "${TOOL_TEST}"; then
+        rm -rf "${install_path}"
+        fail "Error with command: '${TOOL_TEST}'"
+    fi
+
+    echo "> ${TOOL_NAME} ${version} installation was successful!"
 }

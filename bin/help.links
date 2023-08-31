@@ -12,6 +12,6 @@ cat << EOF
 Links:
 - asdf plugin repository: https://github.com/olofvndrhr/asdf-just
 - tool repository: https://github.com/casey/just
-- tool website: https://just.systems/
+- tool website: https://just.systems/man/en/
 
 EOF
