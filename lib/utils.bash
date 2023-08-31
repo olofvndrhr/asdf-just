@@ -107,7 +107,7 @@ function install_version() {
         rm -rf "${install_path}"
         fail "Expected ${install_path}/${TOOL_NAME} to be executable"
     fi
-    if ! "${TOOL_NAME}" "${TOOL_TEST}"; then
+    if ! "${install_path}/${TOOL_NAME}" "${TOOL_TEST}"; then
         rm -rf "${install_path}"
         fail "Error with command: '${TOOL_NAME} ${TOOL_TEST}'"
     fi
