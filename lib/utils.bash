@@ -4,7 +4,7 @@ set -euo pipefail
 
 GH_REPO="https://github.com/casey/just"
 TOOL_NAME="just"
-TOOL_TEST="just --version"
+TOOL_TEST="--version"
 
 function fail() {
     echo -e "asdf-${TOOL_NAME}: ${*}"
@@ -107,9 +107,9 @@ function install_version() {
         rm -rf "${install_path}"
         fail "Expected ${install_path}/${TOOL_NAME} to be executable"
     fi
-    if ! "${TOOL_TEST}"; then
+    if ! "${TOOL_NAME}" "${TOOL_TEST}"; then
         rm -rf "${install_path}"
-        fail "Error with command: '${TOOL_TEST}'"
+        fail "Error with command: '${TOOL_NAME} ${TOOL_TEST}'"
     fi
 
     echo "> ${TOOL_NAME} ${version} installation was successful!"
