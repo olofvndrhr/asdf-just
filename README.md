@@ -2,23 +2,22 @@
 
 # asdf-just [![Build](https://github.com/olofvndrhr/asdf-just/actions/workflows/build.yml/badge.svg)](https://github.com/olofvndrhr/asdf-just/actions/workflows/build.yml) [![Lint](https://github.com/olofvndrhr/asdf-just/actions/workflows/lint.yml/badge.svg)](https://github.com/olofvndrhr/asdf-just/actions/workflows/lint.yml)
 
-
 [just](https://just.systems/man/en/) plugin for the [asdf version manager](https://asdf-vm.com).
 
 </div>
 
 # Contents
 
-- [Dependencies](#dependencies)
-- [Install](#install)
-- [Contributing](#contributing)
-- [License](#license)
+-   [Dependencies](#dependencies)
+-   [Install](#install)
+-   [Contributing](#contributing)
+-   [License](#license)
 
 # Dependencies
 
 **TODO: adapt this section**
 
-- `bash`, `curl`, `tar`, `gzip`: generic POSIX utilities.
+-   `bash`, `curl`, `tar`, `gzip`: generic POSIX utilities.
 
 # Install
 

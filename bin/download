@@ -12,8 +12,5 @@ if [[ "${ASDF_INSTALL_TYPE}" != "version" ]]; then
     fail "asdf-${TOOL_NAME} supports release installs only"
 fi
 
-# download tar.gz file to the download directory
+# download and extract tool to the download directory
 download_release "${ASDF_INSTALL_VERSION}" "${ASDF_DOWNLOAD_PATH}"
-
-# extract contents of tar.gz file into the download directory
-extract_release "${ASDF_INSTALL_VERSION}" "${ASDF_DOWNLOAD_PATH}"
