@@ -4,7 +4,7 @@ set -euo pipefail
 
 GH_REPO="https://github.com/casey/just"
 TOOL_NAME="just"
-TOOL_TEST="--version"
+TOOL_TEST="--help"
 
 function fail() {
     echo -e "asdf-${TOOL_NAME}: ${*}"
@@ -14,8 +14,8 @@ function fail() {
 # global vars
 curl_opts=(-fsSL)
 
-if [ -n "${GITHUB_API_TOKEN:-}" ]; then
-    curl_opts=("${curl_opts[@]}" -H "Authorization: token ${GITHUB_API_TOKEN}")
+if [[ -n "${GITHUB_API_TOKEN:-}" ]]; then
+    curl_opts+=(-H "Authorization: token ${GITHUB_API_TOKEN}")
 fi
 
 function sort_versions() {
@@ -102,12 +102,13 @@ function install_version() {
     mkdir -p "${install_path}"
 
     mv -f "${download_path}/${TOOL_NAME}" "${install_path}/${TOOL_NAME}"
+    chmod +x "${install_path}/${TOOL_NAME}"
 
     if [[ ! -x "${install_path}/${TOOL_NAME}" ]]; then
         rm -rf "${install_path}"
         fail "Expected ${install_path}/${TOOL_NAME} to be executable"
     fi
-    if ! "${install_path}/${TOOL_NAME}" "${TOOL_TEST}"; then
+    if ! "${install_path}/${TOOL_NAME}" "${TOOL_TEST}" > /dev/null; then
         rm -rf "${install_path}"
         fail "Error with command: '${TOOL_NAME} ${TOOL_TEST}'"
     fi
