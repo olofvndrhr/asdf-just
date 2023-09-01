@@ -77,19 +77,15 @@ function download_release() {
 
     mkdir -p "${download_path}"
 
-    echo "* Platform: ${platform}"
-    echo "* Downloading ${TOOL_NAME}, release ${version}..."
+    echo "* Downloading ${TOOL_NAME} ${version} from ${url}"
     if ! curl "${curl_opts[@]}" -o "${download_path}/${release_tar}" -C - "${url}"; then
         fail "Could not download ${url}"
     fi
-    echo "> Download successful"
 
-    echo "* Extracting ${release_tar}..."
     if ! tar -xzf "${download_path}/${release_tar}" -C "${download_path}" "${TOOL_NAME}"; then
         fail "Could not extract ${release_tar}"
     fi
     rm -f "${download_path}/${release_tar}"
-    echo "> Extraction successful"
 }
 
 function install_version() {
@@ -113,5 +109,5 @@ function install_version() {
         fail "Error with command: '${TOOL_NAME} ${TOOL_TEST}'"
     fi
 
-    echo "> ${TOOL_NAME} ${version} installation was successful!"
+    echo "${TOOL_NAME} ${version} installation was successful!"
 }
