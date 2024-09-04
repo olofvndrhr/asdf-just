@@ -47,6 +47,9 @@ function get_platform() {
         "Darwin")
             platform="apple-darwin"
             ;;
+        *)
+            fail "This platform is currently not supported"
+            ;;
     esac
 
     case "$(uname -m)" in
@@ -59,6 +62,9 @@ function get_platform() {
         "arm" | "armv7")
             arch="armv7"
             platform=unknown-linux-musleabihf
+            ;;
+        *)
+            fail "This platform is currently not supported"
             ;;
     esac
 
