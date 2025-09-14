@@ -39,7 +39,7 @@ asdf list-all just
 asdf install just latest
 
 # Set a version globally (on your ~/.tool-versions file)
-asdf global just latest
+asdf set --home just latest
 
 # Now just commands are available
 just --version
