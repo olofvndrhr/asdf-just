@@ -8,16 +8,16 @@
 
 # Contents
 
--   [Dependencies](#dependencies)
--   [Install](#install)
--   [Contributing](#contributing)
--   [License](#license)
+- [Dependencies](#dependencies)
+- [Install](#install)
+- [Contributing](#contributing)
+- [License](#license)
 
 # Dependencies
 
 **TODO: adapt this section**
 
--   `bash`, `curl`, `tar`, `gzip`: generic POSIX utilities.
+- `bash`, `curl`, `tar`, `gzip`: generic POSIX utilities.
 
 # Install
 
@@ -33,7 +33,7 @@ just:
 
 ```shell
 # Show all installable versions
-asdf list-all just
+asdf list all just
 
 # Install specific version
 asdf install just latest
